@@ -26,7 +26,10 @@ const App = () => {
   useEffect(() => {
     personServices
       .getAll()
-      .then(initialPersons => setPersons(initialPersons))
+      .then(initialPersons => {
+        console.log("Persons from Backend: ", initialPersons)
+        setPersons(initialPersons)
+      })
   }, [])
 
   // console.log(persons.length, 'persons rendered')
