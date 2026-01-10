@@ -5,7 +5,7 @@ const cors = require('cors')
 const app = express()
 
 morgan.token('body', (request, response) => {
-    if (request.method === 'POST') {
+    if (request.method === 'POST' || request.method === 'PUT') {
         return JSON.stringify(request.body)
     }
 })
@@ -75,6 +75,20 @@ app.delete('/api/persons/:id', (request, response) => {
     persons = persons.filter(p => p.id !== id)
 
     response.status(204).end()
+})
+
+app.put('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    const changedPerson = request.body
+    if (!changedPerson.number) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+    console.log(changedPerson)
+    persons = persons.map(p => p.id === id ? changedPerson : p)
+
+    response.json(changedPerson)
 })
 
 app.post('/api/persons', (request, response) => {

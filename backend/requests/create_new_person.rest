@@ -2,7 +2,7 @@ POST https://phonebook-backend-mzrp.onrender.com/api/persons
 Content-Type: application/json
 
 {
-    "name": "MNK",
+    "name": "Merlin",
     "number": "555-555-5555"
 }
 
