@@ -6,9 +6,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true, // Listen on 0.0.0.0
-    port: 5173, // Or your preferred port
+    port: 5173, // 
     allowedHosts: [
       'phonebook-frontend-24ef.onrender.com'
-    ]
+    ],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      }
+    }
   }
 });
