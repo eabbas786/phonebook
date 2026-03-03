@@ -1,16 +1,16 @@
-PUT https://myphonebook-tlil.onrender.com/api/persons
+PUT http://localhost:3001/api/persons/69a74b000a676ec9d63ea406
 Content-Type: application/json
 
 {
-    "name": "muizza",
-    "number": "555-555-5555"
+    "name": "Merlin",
+    "number": "123-456-7890"
 }
 
 ###
-PUT https://myphonebook-tlil.onrender.com/api/persons
+PUT http://localhost:3001/api/persons/69824c99a2360ac9518b7e3d
 Content-Type: application/json
 
 {
-    "name": "muizza"
+    "name": "Merlin"
 }
 

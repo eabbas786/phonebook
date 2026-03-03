@@ -37,6 +37,12 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
+    // id: String(persons.length + 1)
+    //
+    const personObject = {
+      name: newName,
+      number: newNumber
+    }
     const original = persons.find(person => person.name === newName)
     if (original) {
       const warning = `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -92,6 +98,11 @@ const App = () => {
     setNewNumber('')
 
   }
+
+
+
+
+
 
   const deletePerson = (id, name) => {
     window.confirm(`Delete ${name}?`)
