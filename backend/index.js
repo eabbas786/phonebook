@@ -66,11 +66,18 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
     const currentDate = new Date();
     const gmtString = currentDate.toUTCString();
-    response.send(`<div> 
-        <p>The phonebook has info for ${Person.countDocuments({})} people  </p> 
+
+    Person.countDocuments({}).then(count => {
+        response.send(`<div> 
+        <p>The phonebook has info for ${count} people  </p> 
         <p> ${gmtString} </p> 
-        </div>`
-    )
+        </div>`)
+    })
+        .catch(error => {
+            response.status(500).send({ error: 'Database error' });
+        })
+
+
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -84,7 +91,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     //     response.status(404).end()
     // }
 
-    console.log(reques.params.id)
+    console.log(request.params.id)
     Person.findById(request.params.id)
         .then(person => {
             if (person) {
@@ -126,6 +133,13 @@ app.put('/api/persons/:id', (request, response, next) => {
     // response.json(changedPerson)
 
     const { name, number } = request.body
+    if (!number) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+
+    }
+
 
     console.log(number)
 
