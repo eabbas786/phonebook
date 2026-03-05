@@ -28,6 +28,7 @@ const App = () => {
       .getAll()
       .then(initialPersons => {
         console.log("Persons from Backend: ", initialPersons)
+        console.log("Hello World")
         setPersons(initialPersons)
       })
   }, [])
@@ -39,20 +40,22 @@ const App = () => {
 
     // id: String(persons.length + 1)
     //
-    const personObject = {
-      name: newName,
-      number: newNumber
-    }
+
     const original = persons.find(person => person.name === newName)
+    console.log(original)
     if (original) {
       const warning = `${newName} is already added to phonebook, replace the old number with a new one?`
       window.confirm(warning)
       personServices
         .replace(original.id, { ...original, "number": newNumber })
         .then(returnedPerson => {
+          if (!returnedPerson.name || !returnedPerson.number) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
           setPersons(persons.map(p => p.id === original.id ? returnedPerson : p))
         })
         .then(() => {
+
           setSuccessMessage(
             `Replaced number of ${newName} successfully.`
           )
@@ -61,9 +64,17 @@ const App = () => {
           }, 5000)
         })
         .catch((error) => {
-          setErrorMessage(
-            `Information of ${newName} has already been removed from server`
-          )
+          if (error.message.includes('400')) {
+            setErrorMessage(
+              `Missing name or number`
+            )
+
+          }
+          else {
+            setErrorMessage(
+              `Information of ${newName} has already been removed from server`
+            )
+          }
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
@@ -82,6 +93,9 @@ const App = () => {
       personServices
         .create(personObject)
         .then(returnedPerson => {
+          if (!returnedPerson.name || !returnedPerson.number) {
+            throw new Error()
+          }
           setPersons(persons.concat(returnedPerson))
         })
         .then(() => {
@@ -90,6 +104,14 @@ const App = () => {
           )
           setTimeout(() => {
             setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(
+            `Missing name or number`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
           }, 5000)
         })
     }
